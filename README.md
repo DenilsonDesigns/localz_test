@@ -20,4 +20,6 @@
 
 ##### Color Pallete: https://www.color-hex.com/color-palette/44545
 
+##### Mock API response for tests: https://mswjs.io/
+
 #### ------------------------
