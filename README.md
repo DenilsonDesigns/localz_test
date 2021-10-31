@@ -8,6 +8,8 @@
 
 #### Techs/Libraries Used:
 
+##### Rick and Morty API: https://rickandmortyapi.com/
+
 ##### ReactJS: https://reactjs.org/
 
 ##### TypeScript: https://www.typescriptlang.org/

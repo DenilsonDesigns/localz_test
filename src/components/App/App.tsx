@@ -1,43 +1,103 @@
-import { Container, ListGroup, Row, Col, Card, Button } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { mortios } from "../../util/mortios";
+import { FocusCard } from "../FocusCard/FocusCard";
+import { MainList } from "../MainList/MainList";
+import { DisplayError } from "../UI/DisplayError";
 import { NavMain } from "../UI/NavMain";
+import { SearchBox } from "../UI/SearchBox";
+import { TablePagination } from "../UI/TablePagination";
 import "./App.css";
 
 const App = () => {
+  const [error, setError] = useState("");
+  const [rawData, setRawData] = useState<IMortiosDataObj[]>(
+    [] as IMortiosDataObj[]
+  );
+  const [focusChar, setFocusChar] = useState<IMortiosDataObj>(
+    {} as IMortiosDataObj
+  );
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [pageNum, setPageNum] = useState(1);
+  const [numButs, setNumButs] = useState(0);
+  const [searchBoxValue, setSearchBoxValue] = useState<string>("");
+
+  const fetchDataByPageNum = useCallback(
+    (pageNum: number, searchVal: string) => {
+      setError("");
+      console.log("calling Mortios with: ", searchVal);
+      mortios
+        .get(`/character/?page=${pageNum}&status=alive&name=${searchVal}`)
+        .then((res: IMortiosResponse) => {
+          setRawData(res.data.results);
+          setFocusChar(res.data.results[0]);
+          setActiveIndex(0);
+          setNumButs(res.data.info.pages);
+          setPageNum(pageNum);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(err.message);
+        });
+    },
+    []
+  );
+
+  useEffect(() => {
+    fetchDataByPageNum(1, searchBoxValue);
+  }, [fetchDataByPageNum, searchBoxValue]);
+
+  const handleListOnClick = (i: number) => {
+    setActiveIndex(i);
+    setFocusChar(rawData[i]);
+  };
+
+  const handlePaginOnClick = (i: number) => {
+    fetchDataByPageNum(i, searchBoxValue);
+    setPageNum(i);
+  };
+
+  const handleOnSearchChange = (val: string) => {
+    console.log("calling ahndleonsearchacange", val);
+    setSearchBoxValue(val);
+    fetchDataByPageNum(1, val);
+  };
+
   return (
     <div
       className="main"
       style={{ backgroundColor: "#fce5e5", minHeight: "100vh" }}
     >
-      <NavMain
-        title={"Szechuan.io"}
-        links={["one", "two"]}
-        textColour={"darkSalmon"}
-      />
+      <NavMain title={"Szechuan.io"} textColour={"darkSalmon"} />
       <Container>
-        {/* <div>test</div> */}
         <Row>
-          <Col>
-            <ListGroup>
-              <ListGroup.Item>Cras justo odio</ListGroup.Item>
-              <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-              <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-              <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
-              <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
-            </ListGroup>
-          </Col>
-          <Col>
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
-          </Col>
+          <SearchBox
+            value={searchBoxValue}
+            onSearchChange={handleOnSearchChange}
+          />
+          {error ? (
+            // api unfortunately gives 404 when its a valid request but zero results, hard
+            // to deal with.
+            <DisplayError errorMsg={error} />
+          ) : (
+            <>
+              <Col style={{ paddingRight: "0" }}>
+                <MainList
+                  data={rawData}
+                  listOnClick={handleListOnClick}
+                  activeIndex={activeIndex}
+                />
+                <TablePagination
+                  activeBut={pageNum}
+                  numButs={numButs}
+                  paginOnClick={handlePaginOnClick}
+                />
+              </Col>
+              <Col style={{ paddingLeft: "0" }}>
+                <FocusCard data={focusChar} />
+              </Col>
+            </>
+          )}
         </Row>
       </Container>
     </div>
