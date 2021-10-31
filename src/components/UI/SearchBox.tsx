@@ -21,12 +21,12 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
             Search
           </InputGroup.Text>
           <FormControl
+            data-testid={"searchbox-input"}
             aria-label="Small"
             aria-describedby="inputGroup-sizing-sm"
             placeholder="Search by name..."
             value={value}
             onChange={(e) => {
-              console.log("search e.target.value", e.target.value);
               onSearchChange(e.target.value);
             }}
           />

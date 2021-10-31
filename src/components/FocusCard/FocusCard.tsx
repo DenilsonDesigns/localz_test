@@ -15,7 +15,7 @@ export const FocusCard: React.FC<FocusCardProps> = ({ data }) => {
       }}
     >
       <Card.Img variant="top" src={data?.image} />
-      <Card.Body>
+      <Card.Body data-testid={"focus-card-body"}>
         <Card.Title>{data?.name}</Card.Title>
         <Card.Text>
           <strong>Status: </strong>

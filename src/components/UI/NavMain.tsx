@@ -9,8 +9,10 @@ interface NavMainProps {
 export const NavMain: React.FC<NavMainProps> = ({ title, textColour }) => {
   return (
     <Navbar expand="lg" style={{ backgroundColor: "#c64242" }}>
-      <Container className={textColour}>
-        <Navbar.Brand href="#home">{title}</Navbar.Brand>
+      <Container data-testid={"navmain-container"} className={textColour}>
+        <Navbar.Brand data-testid={"navmain-title"} href="#home">
+          {title}
+        </Navbar.Brand>
       </Container>
     </Navbar>
   );

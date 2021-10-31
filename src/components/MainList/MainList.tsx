@@ -13,14 +13,14 @@ export const MainList: React.FC<MainListProps> = ({
   activeIndex,
 }) => {
   return (
-    <ListGroup>
+    <ListGroup data-testid={"main-list-body"}>
       {data.map((el, i) => {
         return (
           <ListGroup.Item
+            data-testid={`main-list-body-${i}`}
             key={i}
             style={{ padding: ".2rem 1rem" }}
             onClick={() => listOnClick(i)}
-            // active={i === activeIndex}
             className={i === activeIndex ? "lightFlowBackground" : ""}
           >
             <Image

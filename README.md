@@ -2,7 +2,9 @@
 
 ### Install packages: `npm i`
 
-### Run Projects: `npm start`
+### Run Project: `npm start`
+
+### Run Tests: `npm run test`
 
 #### -----------------------
 

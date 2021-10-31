@@ -6,5 +6,9 @@ interface DisplayErrorProps {
 }
 
 export const DisplayError: React.FC<DisplayErrorProps> = ({ errorMsg }) => {
-  return <Alert variant={"danger"}>{errorMsg}</Alert>;
+  return (
+    <Alert data-testid={"error-msg"} variant={"danger"}>
+      {errorMsg}
+    </Alert>
+  );
 };

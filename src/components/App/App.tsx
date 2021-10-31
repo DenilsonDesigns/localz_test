@@ -9,7 +9,7 @@ import { SearchBox } from "../UI/SearchBox";
 import { TablePagination } from "../UI/TablePagination";
 import "./App.css";
 
-const App = () => {
+export const App = (): JSX.Element => {
   const [error, setError] = useState("");
   const [rawData, setRawData] = useState<IMortiosDataObj[]>(
     [] as IMortiosDataObj[]
@@ -25,7 +25,6 @@ const App = () => {
   const fetchDataByPageNum = useCallback(
     (pageNum: number, searchVal: string) => {
       setError("");
-      console.log("calling Mortios with: ", searchVal);
       mortios
         .get(`/character/?page=${pageNum}&status=alive&name=${searchVal}`)
         .then((res: IMortiosResponse) => {
