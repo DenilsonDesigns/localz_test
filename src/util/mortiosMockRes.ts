@@ -8,7 +8,7 @@ export const MOCK_RES = {
   results: [
     {
       id: 1,
-      name: "Rick Sanchez",
+      name: "Rick Test",
       status: "Alive",
       species: "Human",
       type: "",
@@ -70,7 +70,7 @@ export const MOCK_RES = {
     },
     {
       id: 2,
-      name: "Morty Smith",
+      name: "Morty Test",
       status: "Alive",
       species: "Human",
       type: "",

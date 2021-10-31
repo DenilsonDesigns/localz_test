@@ -5,12 +5,12 @@ import { App } from "./App";
 import { MOCK_RES } from "../../util/mortiosMockRes";
 
 const server = setupServer(
-  rest.get("/character", (req, res, ctx) => {
+  rest.get("*/character/*", (req, res, ctx) => {
     return res(ctx.json(MOCK_RES));
   })
 );
 
-beforeAll(() => server.listen({ onUnhandledRequest: "bypass" }));
+beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
@@ -20,9 +20,9 @@ test("gets the data", async () => {
   // This tests that the App component can receive a mock api response and
   // render the list of names based on MOCK_RES
   const out = await waitFor(() => screen.getByTestId("main-list-body-0"));
-  expect(out).toHaveTextContent("Rick Sanchez");
+  expect(out).toHaveTextContent("Rick Test");
 
   expect(screen.getByTestId("main-list-body-1")).toHaveTextContent(
-    "Morty Smith"
+    "Morty Test"
   );
 });
